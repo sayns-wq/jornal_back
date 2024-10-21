@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { ArticleDto } from './dto/article.dto';
@@ -33,8 +34,16 @@ export class ArticleController {
   }
   @Get('/')
   @HttpCode(200)
-  async getAllArticles() {
-    const articles = await this.articleService.getAllArticles();
+  async getAllArticles(@Query() query) {
+    let articles;
+    if (query.limit) {
+      articles = await this.articleService.getAllArticlesWithLimit({
+        limit: query.limit,
+      });
+    } else {
+      articles = await this.articleService.getAllArticles();
+    }
+
     return { status: 'ok', data: articles };
   }
   @Post('/')

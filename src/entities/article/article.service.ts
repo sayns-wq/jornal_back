@@ -31,4 +31,10 @@ export class ArticleService {
       select: ['id', 'articleData', 'header', 'tags', 'createdAt'],
     });
   }
+  public async getAllArticlesWithLimit(query) {
+    return await this.articleRepository.find({
+      select: ['id', 'articleData', 'header', 'tags', 'createdAt'],
+      take: query.limit,
+    });
+  }
 }
